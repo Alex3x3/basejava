@@ -3,8 +3,6 @@ package ru.topjava.webapp;
 import ru.topjava.webapp.model.Resume;
 import ru.topjava.webapp.storage.ArrayStorage;
 
-import java.util.InputMismatchException;
-
 /**
  * Test for your ru.topjava.webapp.storage.ArrayStorage implementation
  */
@@ -28,18 +26,11 @@ public class MainTestArrayStorage {
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
-        String oldUuid = r2.getUuid();
-        System.out.println("\nUpdate " + oldUuid + " resume");
-        while (true) {
-            System.out.print("Input new uuid parameter ");
-            try {
-                ARRAY_STORAGE.update(ARRAY_STORAGE.get(oldUuid));
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println(e.getMessage() + " try again\n");
-            }
-        }
-        System.out.println(oldUuid + " resume became " + r2.getUuid());
+        String uuid = r2.getUuid();
+        System.out.println("\nUpdate " + uuid + " resume");
+        Resume r4 = new Resume();
+        r4.setUuid(uuid);
+        ARRAY_STORAGE.update(r4);
 
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());

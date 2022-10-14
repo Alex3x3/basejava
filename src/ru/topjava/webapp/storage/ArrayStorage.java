@@ -3,8 +3,6 @@ package ru.topjava.webapp.storage;
 import ru.topjava.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 /**
  * Array based storage for Resumes
@@ -21,43 +19,37 @@ public class ArrayStorage {
 
     public void save(Resume r) {
         String uuid = r.getUuid();
-        if (find(uuid) >= 0) {
-            System.out.println("Storage already contains the resume with " + uuid +
-                    " uuid.\nNew " + uuid + " instance won't be saved to the storage");
-            return;
-        }
-
-        if (size < storage.length) {
-            storage[size] = r;
-            size++;
-        } else {
+        if (size >= storage.length) {
             System.out.println("Storage is overfilled.\nResume " + uuid +
                     " won't be saved to the storage");
+        } else if (findIndex(uuid) >= 0) {
+            System.out.println("Storage already contains the resume with " + uuid +
+                    " uuid.\nNew " + uuid + " instance won't be saved to the storage");
+        } else {
+            storage[size] = r;
+            size++;
         }
     }
 
     public Resume get(String uuid) {
-        int index = find(uuid);
-        if (index >= 0) {
-            return storage[index];
+        int index = findIndex(uuid);
+        if (index == -1) {
+            System.out.println("Resume " + uuid + " wasn't found");
+            return null;
         }
-
-        System.out.println("Resume " + uuid + " wasn't found");
-        return null;
+        return storage[index];
     }
 
     public void delete(String uuid) {
-        int index = find(uuid);
-        if (index >= 0) {
-            for (int i = index; i < size - 1; i++) {
-                storage[i] = storage[i + 1];
-            }
-
-            storage[size - 1] = null;
-            size--;
-        } else {
+        int index = findIndex(uuid);
+        if (index == -1) {
             System.out.println("Resume " + uuid + " wasn't found");
+            return;
         }
+
+        System.arraycopy(storage, (index + 1), storage, (index), (size - index - 1));
+        storage[size - 1] = null;
+        size--;
     }
 
     /**
@@ -72,22 +64,16 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        String oldUuid = resume.getUuid();
-        if (find(resume.getUuid()) >= 0) {
-            Scanner console = new Scanner(System.in);
-            String[] inputUuid = console.nextLine().trim().split(" ");
-
-            if (inputUuid.length > 1 || inputUuid[0].length() == 0) {
-                throw new InputMismatchException("Wrong uuid parameter");
-            } else {
-                resume.setUuid(inputUuid[0]);
-            }
-        } else {
-            System.out.println("Resume " + oldUuid + " wasn't found. Nothing to update");
+        String uuid = resume.getUuid();
+        int index = findIndex(uuid);
+        if (index == -1) {
+            System.out.println("Resume " + uuid + " wasn't found. Nothing to update");
+            return;
         }
+        storage[index] = resume;
     }
 
-    private int find(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
