@@ -17,12 +17,12 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void moveElementsWhenDelete(int index) {
+    protected void deleteResume(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - index);
     }
 
     @Override
-    protected int moveElementsWhenSave(int index) {
+    protected int saveResume(int index) {
         index = index * -1 - 1;
         System.arraycopy(storage, index, storage, index + 1, size - index);
         return index;
