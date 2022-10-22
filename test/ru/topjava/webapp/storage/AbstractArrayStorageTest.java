@@ -8,97 +8,132 @@ import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractArrayStorageTest {
 
-    Resume r1 = new Resume();
-    Resume r2 = new Resume();
-    Resume r3 = new Resume();
     protected static final String UUID_1 = "uuid1";
     protected static final String UUID_2 = "uuid2";
     protected static final String UUID_3 = "uuid3";
+    protected static final String UUID_4 = "uuid4";
 
-    AbstractArrayStorage testStorage;
+    final static protected Resume RESUME_1 = new Resume();
+    final static protected Resume RESUME_2 = new Resume();
+    final static protected Resume RESUME_3 = new Resume();
+    final static protected Resume RESUME_4 = new Resume();
+
+
+    final protected AbstractArrayStorage storage;
+
+    static {
+        RESUME_1.setUuid(UUID_1);
+        RESUME_2.setUuid(UUID_2);
+        RESUME_3.setUuid(UUID_3);
+        RESUME_4.setUuid(UUID_4);
+    }
 
     protected AbstractArrayStorageTest(AbstractArrayStorage s) {
-        testStorage = s;
+        storage = s;
     }
 
     @BeforeEach
     void setUp() {
-        testStorage.clear();
-        r1.setUuid(UUID_1);
-        r2.setUuid(UUID_2);
-        r3.setUuid(UUID_3);
-        testStorage.save(r1);
-        testStorage.save(r2);
-        testStorage.save(r3);
+        storage.clear();
+        storage.save(RESUME_1);
+        storage.save(RESUME_2);
+        storage.save(RESUME_3);
     }
 
     @Test
     void clear() {
-        fillStorage();
-        testStorage.clear();
-        assertEquals(0, testStorage.size(), "Storage wasn't fully cleared");
+        storage.clear();
+        assertSize(0, "Clear test 1 failed");
+        assertArrayEquals(storage.getAll(), new Resume[0], "Clear test 2 failed");
     }
 
     @Test
     void update() {
         Resume r = new Resume();
         r.setUuid(UUID_1);
-        testStorage.update(r);
-        assertNotSame(r1, testStorage.get(UUID_1), "Update wasn't done");
-        assertEquals(r1, testStorage.get(UUID_1), "Old and new(updated) resume not equals");
+        storage.update(r);
+        assertNotSame(RESUME_1, storage.get(UUID_1), "Update test 1 failed. Update wasn't done");
+        assertEquals(RESUME_1, storage.get(UUID_1), "Update test 2 failed." +
+                " Old and new(updated) resume not equals");
+    }
+
+    @Test
+    void updateNotExist() {
+        assertDoesNotThrow(() -> storage.update(RESUME_4), "Update not exist resume test failed");
     }
 
     @Test
     void save() {
-        assertEquals(3, testStorage.size(), "Resumes can't be saved to the storage");
+        storage.save(RESUME_4);
+        assertGet(RESUME_4, "Save test 1 failed. Storage doesn't contain saved resume");
+        assertSize(4, "Save test 2 failed. Storage size didn't increase after saving");
+    }
 
-        Resume r = new Resume();
-        r.setUuid(UUID_1);
-        testStorage.save(r);
-        assertEquals(1, countInstances(r), "Storage contains duplicates");
+    @Test
+    void saveExist() {
+        assertDoesNotThrow(() -> storage.save(RESUME_3), "Save exist test 1 failed. " +
+                "Save method threw exception");
+        assertSize(3, "Save exist test 2 failed. Storage size changed");
+    }
 
+    @Test
+    void saveOverflow() {
         fillStorage();
-        assertDoesNotThrow(() -> testStorage.save(new Resume()), "Storage overfilled");
+        assertDoesNotThrow(() -> storage.save(new Resume()), "Storage overflow test failed. " +
+                "Save method threw exception");
     }
 
     @Test
     void get() {
-        assertEquals(r1, testStorage.get(UUID_1), "Wrong resume was returned");
+        assertGet(RESUME_1, "Get RESUME_1 test. Wrong resume was returned");
+        assertGet(RESUME_2, "Get RESUME_2 test. Wrong resume was returned");
+        assertGet(RESUME_3, "Get RESUME_3 test. Wrong resume was returned");
+    }
+
+    @Test
+    void getNotExist() {
+        assertNull(storage.get(UUID_4), "Get not exist resume test failed");
     }
 
     @Test
     void delete() {
-        testStorage.delete(UUID_1);
-        assertEquals(0, countInstances(r1), "Delete wasn't done");
+        storage.delete(UUID_1);
+        assertNull(storage.get(UUID_1), "Delete test 1 failed. Storage contains deleted resume." );
+        assertSize(2, "Delete test 2 failed. Storage size didn't decrease after delete");
+    }
+
+    @Test
+    void deleteNotExist() {
+        assertDoesNotThrow(() -> storage.delete(UUID_4), "Delete not exist test 1 failed. " +
+                "Delete threw exception");
+        assertSize(3, "Delete not exist test 2 failed. Storage size changed");
     }
 
     @Test
     void getAll() {
-        assertEquals(3, testStorage.getAll().length);
+        Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
+        assertArrayEquals(expected, storage.getAll(), "GET ALL. Test 1 failed");
+        assertEquals(3, storage.getAll().length, "GET ALL. Test 2 failed");
     }
 
     @Test
     void size() {
-        assertEquals(3, testStorage.size());
+        assertSize(3, "Wrong size returned");
     }
 
     private void fillStorage() {
-        for (int i = testStorage.size(); i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
+        for (int i = storage.size(); i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
             Resume r = new Resume();
             r.setUuid("uuid" + (i + 1));
-            testStorage.save(r);
+            storage.save(r);
         }
     }
 
-    private int countInstances(Resume resume) {
-        int count = 0;
-        for (Resume r : testStorage.storage) {
-            if (r == null) {
-                break;
-            } else if (r.equals(resume)) {
-                count++;
-            }
-        }
-        return count;
+    private void assertSize(int size, String message) {
+        assertEquals(size, storage.size(), message);
+    }
+
+    private void assertGet(Resume r, String message) {
+        assertEquals(r, storage.get(r.getUuid()), message);
     }
 }
