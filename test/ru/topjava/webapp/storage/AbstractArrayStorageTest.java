@@ -2,6 +2,9 @@ package ru.topjava.webapp.storage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.topjava.webapp.exception.ExistStorageException;
+import ru.topjava.webapp.exception.NotExistStorageException;
+import ru.topjava.webapp.exception.StorageException;
 import ru.topjava.webapp.model.Resume;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,8 +46,9 @@ abstract class AbstractArrayStorageTest {
     @Test
     void clear() {
         storage.clear();
-        assertSize(0, "Clear test 1 failed");
-        assertArrayEquals(storage.getAll(), new Resume[0], "Clear test 2 failed");
+        assertSize(0, "Clear test 1 failed. Size didn't changed after clear");
+        assertArrayEquals(storage.getAll(), new Resume[0], "Clear test 2 failed. " +
+                "Storage contains non null elements");
     }
 
     @Test
@@ -52,14 +56,16 @@ abstract class AbstractArrayStorageTest {
         Resume r = new Resume();
         r.setUuid(UUID_1);
         storage.update(r);
-        assertNotSame(RESUME_1, storage.get(UUID_1), "Update test 1 failed. Update wasn't done");
+        assertNotSame(RESUME_1, storage.get(UUID_1), "Update test 1 failed. " +
+                "Resume reference stays the same after update");
         assertEquals(RESUME_1, storage.get(UUID_1), "Update test 2 failed." +
-                " Old and new(updated) resume not equals");
+                " Updated resume isn't equals to it's old version");
     }
 
     @Test
     void updateNotExist() {
-        assertDoesNotThrow(() -> storage.update(RESUME_4), "Update not exist resume test failed");
+        assertThrows(NotExistStorageException.class, () -> storage.update(RESUME_4),
+                "Update not exist resume test failed. Update method didn't throw exception");
     }
 
     @Test
@@ -71,16 +77,16 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void saveExist() {
-        assertDoesNotThrow(() -> storage.save(RESUME_3), "Save exist test 1 failed. " +
-                "Save method threw exception");
+        assertThrows(ExistStorageException.class, () -> storage.save(RESUME_3), "Save exist test 1 failed. " +
+                "Save method didn't threw exception");
         assertSize(3, "Save exist test 2 failed. Storage size changed");
     }
 
     @Test
     void saveOverflow() {
         fillStorage();
-        assertDoesNotThrow(() -> storage.save(new Resume()), "Storage overflow test failed. " +
-                "Save method threw exception");
+        assertThrows(StorageException.class, () -> storage.save(new Resume()),
+                "Storage overflow test failed. Save method didn't throw exception");
     }
 
     @Test
@@ -92,33 +98,37 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void getNotExist() {
-        assertNull(storage.get(UUID_4), "Get not exist resume test failed");
+        assertThrows(NotExistStorageException.class, () -> storage.get(UUID_4),
+                "Get not exist resume test failed");
     }
 
     @Test
     void delete() {
         storage.delete(UUID_1);
-        assertNull(storage.get(UUID_1), "Delete test 1 failed. Storage contains deleted resume." );
+        assertThrows(NotExistStorageException.class, () -> storage.get(UUID_1),
+                "Delete test 1 failed. Resume hasn't been deleted from the storage");
         assertSize(2, "Delete test 2 failed. Storage size didn't decrease after delete");
     }
 
     @Test
     void deleteNotExist() {
-        assertDoesNotThrow(() -> storage.delete(UUID_4), "Delete not exist test 1 failed. " +
-                "Delete threw exception");
+        assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_4),
+                "Delete not exist test 1 failed. Delete method didn't throw exception");
         assertSize(3, "Delete not exist test 2 failed. Storage size changed");
     }
 
     @Test
     void getAll() {
         Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-        assertArrayEquals(expected, storage.getAll(), "GET ALL. Test 1 failed");
-        assertEquals(3, storage.getAll().length, "GET ALL. Test 2 failed");
+        assertEquals(3, storage.getAll().length, "GET ALL test 1 failed. " +
+                "Copied array length isn't the same as expected");
+        assertArrayEquals(expected, storage.getAll(), "GET ALL test 2 failed. " +
+                "Copied array isn't the same as expected");
     }
 
     @Test
     void size() {
-        assertSize(3, "Wrong size returned");
+        assertSize(3, "Size test failed");
     }
 
     private void fillStorage() {
