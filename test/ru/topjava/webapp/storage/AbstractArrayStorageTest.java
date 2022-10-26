@@ -132,10 +132,14 @@ abstract class AbstractArrayStorageTest {
     }
 
     private void fillStorage() {
-        for (int i = storage.size(); i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-            Resume r = new Resume();
-            r.setUuid("uuid" + (i + 1));
-            storage.save(r);
+        try {
+            for (int i = storage.size(); i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
+                Resume r = new Resume();
+                r.setUuid("uuid" + (i + 1));
+                storage.save(r);
+            }
+        } catch (StorageException e) {
+            fail(e.getMessage());
         }
     }
 
