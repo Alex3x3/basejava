@@ -7,9 +7,11 @@ import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.exception.StorageException;
 import ru.topjava.webapp.model.Resume;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class AbstractArrayStorageTest {
+abstract class AbstractStorageTest {
 
     protected static final String UUID_1 = "uuid1";
     protected static final String UUID_2 = "uuid2";
@@ -22,7 +24,7 @@ abstract class AbstractArrayStorageTest {
     final static protected Resume RESUME_4 = new Resume();
 
 
-    final protected AbstractArrayStorage storage;
+    final protected AbstractStorage storage;
 
     static {
         RESUME_1.setUuid(UUID_1);
@@ -31,7 +33,7 @@ abstract class AbstractArrayStorageTest {
         RESUME_4.setUuid(UUID_4);
     }
 
-    protected AbstractArrayStorageTest(AbstractArrayStorage s) {
+    protected AbstractStorageTest(AbstractStorage s) {
         storage = s;
     }
 
@@ -120,9 +122,11 @@ abstract class AbstractArrayStorageTest {
     @Test
     void getAll() {
         Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-        assertEquals(3, storage.getAll().length, "GET ALL test 1 failed. " +
+        Resume[] derived = storage.getAll();
+        Arrays.sort(derived);
+        assertEquals(3, derived.length, "GET ALL test 1 failed. " +
                 "Copied array length isn't the same as expected");
-        assertArrayEquals(expected, storage.getAll(), "GET ALL test 2 failed. " +
+        assertArrayEquals(expected, derived, "GET ALL test 2 failed. " +
                 "Copied array isn't the same as expected");
     }
 
@@ -133,7 +137,7 @@ abstract class AbstractArrayStorageTest {
 
     private void fillStorage() {
         try {
-            for (int i = storage.size(); i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
+            for (int i = storage.size(); i < AbstractStorage.STORAGE_LIMIT; i++) {
                 Resume r = new Resume();
                 r.setUuid("uuid" + (i + 1));
                 storage.save(r);

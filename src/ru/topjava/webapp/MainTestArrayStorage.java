@@ -1,14 +1,15 @@
 package ru.topjava.webapp;
 
+import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.model.Resume;
-import ru.topjava.webapp.storage.AbstractArrayStorage;
-import ru.topjava.webapp.storage.SortedArrayStorage;
+import ru.topjava.webapp.storage.AbstractStorage;
+import ru.topjava.webapp.storage.ListStorage;
 
 /**
  * Test for your ru.topjava.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final AbstractArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
+    static final AbstractStorage ARRAY_STORAGE = new ListStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
@@ -25,7 +26,11 @@ public class MainTestArrayStorage {
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+        try {
+            System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+        } catch (NotExistStorageException e) {
+            System.out.println("Resume \"dummy\" isn't presented in storage");
+        }
 
         String uuid = r2.getUuid();
         System.out.println("\nUpdate " + uuid + " resume");
