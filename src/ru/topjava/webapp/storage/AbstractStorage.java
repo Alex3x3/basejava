@@ -1,47 +1,60 @@
 package ru.topjava.webapp.storage;
 
-import ru.topjava.webapp.exception.StorageException;
+import ru.topjava.webapp.exception.ExistStorageException;
+import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected static final int STORAGE_LIMIT = 10000;
-
     @Override
-    public void save(Resume r) {
-        String uuid = r.getUuid();
-        checkStorageOverflow(uuid);
-        Object searchKey = checkNotExistElement(uuid);
-        saveInStorage(searchKey, r);
+    final public void update(Resume r) {
+        Object searchKey = getExistingSearchKey(r.getUuid());
+        doUpdate(r, searchKey);
     }
 
     @Override
-    public Resume get(String uuid) {
-        Object searchKey = checkExistElement(uuid);
-        return getResume(searchKey);
+    final public void save(Resume r) {
+        Object searchKey = getNotExistingSearchKey(r.getUuid());
+        doSave(r, searchKey);
     }
 
     @Override
-    public void delete(String uuid) {
-        Object searchKey = checkExistElement(uuid);
-        deleteFromStorage(searchKey);
+    final public Resume get(String uuid) {
+        Object searchKey = getExistingSearchKey(uuid);
+        return doGet(searchKey);
     }
 
-    protected abstract Object checkNotExistElement(String uuid);
+    @Override
+    final public void delete(String uuid) {
+        Object searchKey = getExistingSearchKey(uuid);
+        doDelete(searchKey);
+    }
 
-    protected abstract void saveInStorage(Object searchKey, Resume r);
+    private Object getExistingSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return searchKey;
+    }
 
-    protected abstract Object checkExistElement(String uuid);
+    private Object getNotExistingSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (isExist(searchKey)) {
+            throw new ExistStorageException(uuid);
+        }
+        return searchKey;
+    }
 
-    protected abstract Resume getResume(Object searchKey);
+    protected abstract void doUpdate(Resume r, Object searchKey);
 
-    protected abstract void deleteFromStorage(Object searchKey);
+    protected abstract void doSave(Resume r, Object searchKey);
+
+    protected abstract Resume doGet(Object searchKey);
+
+    protected abstract void doDelete(Object searchKey);
 
     protected abstract Object getSearchKey(String uuid);
 
-    private void checkStorageOverflow(String uuid) {
-        if (size() >= STORAGE_LIMIT) {
-            throw new StorageException("Storage overflow", uuid);
-        }
-    }
+    protected abstract boolean isExist(Object searchKey);
 }

@@ -2,7 +2,7 @@ package ru.topjava.webapp.storage;
 
 class ListStorageTest extends AbstractStorageTest {
 
-    protected ListStorageTest() {
+    ListStorageTest() {
         super(new ListStorage());
     }
 }

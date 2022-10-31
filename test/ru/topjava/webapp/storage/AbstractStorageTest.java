@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.topjava.webapp.exception.ExistStorageException;
 import ru.topjava.webapp.exception.NotExistStorageException;
-import ru.topjava.webapp.exception.StorageException;
 import ru.topjava.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -33,7 +32,7 @@ abstract class AbstractStorageTest {
         RESUME_4.setUuid(UUID_4);
     }
 
-    protected AbstractStorageTest(AbstractStorage s) {
+    AbstractStorageTest(AbstractStorage s) {
         storage = s;
     }
 
@@ -85,13 +84,6 @@ abstract class AbstractStorageTest {
     }
 
     @Test
-    void saveOverflow() {
-        fillStorage();
-        assertThrows(StorageException.class, () -> storage.save(new Resume()),
-                "Storage overflow test failed. Save method didn't throw exception");
-    }
-
-    @Test
     void get() {
         assertGet(RESUME_1, "Get RESUME_1 test. Wrong resume was returned");
         assertGet(RESUME_2, "Get RESUME_2 test. Wrong resume was returned");
@@ -133,18 +125,6 @@ abstract class AbstractStorageTest {
     @Test
     void size() {
         assertSize(3, "Size test failed");
-    }
-
-    private void fillStorage() {
-        try {
-            for (int i = storage.size(); i < AbstractStorage.STORAGE_LIMIT; i++) {
-                Resume r = new Resume();
-                r.setUuid("uuid" + (i + 1));
-                storage.save(r);
-            }
-        } catch (StorageException e) {
-            fail(e.getMessage());
-        }
     }
 
     private void assertSize(int size, String message) {

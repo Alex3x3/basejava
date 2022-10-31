@@ -1,7 +1,5 @@
 package ru.topjava.webapp.storage;
 
-import ru.topjava.webapp.exception.ExistStorageException;
-import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.model.Resume;
 
 import java.util.ArrayList;
@@ -12,63 +10,52 @@ public class ListStorage extends AbstractStorage {
     private final List<Resume> storage = new ArrayList<>();
 
     @Override
-    public void clear() {
+    final public void clear() {
         storage.clear();
     }
 
     @Override
-    public void update(Resume r) {
-        int index = checkExistElement(r.getUuid());
-        storage.set(index, r);
-    }
-
-    @Override
-    public Resume[] getAll() {
+    final public Resume[] getAll() {
         return storage.toArray(new Resume[0]);
     }
 
     @Override
-    public int size() {
+    final public int size() {
         return storage.size();
     }
 
     @Override
-    protected Integer checkNotExistElement(String uuid) {
-        int searchKey = getSearchKey(uuid);
-        if (searchKey >= 0) {
-            throw new ExistStorageException(uuid);
-        }
-        return searchKey;
+    final public void doUpdate(Resume r, Object searchKey) {
+        storage.set((int) searchKey, r);
     }
 
     @Override
-    protected void saveInStorage(Object searchKey, Resume r) {
+    final protected void doSave(Resume r, Object searchKey) {
         storage.add(r);
     }
 
     @Override
-    protected Integer checkExistElement(String uuid) {
-        int searchKey = getSearchKey(uuid);
-        if (searchKey == -1) {
-            throw new NotExistStorageException(uuid);
-        }
-        return searchKey;
+    final protected Resume doGet(Object searchKey) {
+        return storage.get((int) searchKey);
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
-        return storage.get((Integer) searchKey);
-    }
-
-    @Override
-    protected void deleteFromStorage(Object searchKey) {
+    final protected void doDelete(Object searchKey) {
         storage.remove((int) searchKey);
     }
 
     @Override
-    protected Integer getSearchKey(String uuid) {
-        Resume r = new Resume();
-        r.setUuid(uuid);
-        return storage.indexOf(r);
+    final protected Integer getSearchKey(String uuid) {
+        for (int i = 0; i < storage.size(); i++) {
+            if (storage.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    final protected boolean isExist(Object searchKey) {
+        return searchKey != null;
     }
 }

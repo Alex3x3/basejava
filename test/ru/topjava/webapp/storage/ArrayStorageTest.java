@@ -1,6 +1,6 @@
 package ru.topjava.webapp.storage;
 
-class ArrayStorageTest extends AbstractStorageTest {
+class ArrayStorageTest extends AbstractArrayStorageTest {
 
     ArrayStorageTest() {
         super(new ArrayStorage());
