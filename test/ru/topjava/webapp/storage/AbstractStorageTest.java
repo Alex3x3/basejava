@@ -6,7 +6,9 @@ import ru.topjava.webapp.exception.ExistStorageException;
 import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,20 +19,13 @@ abstract class AbstractStorageTest {
     protected static final String UUID_3 = "uuid3";
     protected static final String UUID_4 = "uuid4";
 
-    final static protected Resume RESUME_1 = new Resume();
-    final static protected Resume RESUME_2 = new Resume();
-    final static protected Resume RESUME_3 = new Resume();
-    final static protected Resume RESUME_4 = new Resume();
+    final static protected Resume RESUME_1 = new Resume(UUID_1, "Name1 LastName1");
+    final static protected Resume RESUME_2 = new Resume(UUID_2, "Name2 LastName2");
+    final static protected Resume RESUME_3 = new Resume(UUID_3, "Name3 LastName3");
+    final static protected Resume RESUME_4 = new Resume(UUID_4, "Name4 LastName4");
 
 
     final protected AbstractStorage storage;
-
-    static {
-        RESUME_1.setUuid(UUID_1);
-        RESUME_2.setUuid(UUID_2);
-        RESUME_3.setUuid(UUID_3);
-        RESUME_4.setUuid(UUID_4);
-    }
 
     AbstractStorageTest(AbstractStorage s) {
         storage = s;
@@ -48,14 +43,14 @@ abstract class AbstractStorageTest {
     void clear() {
         storage.clear();
         assertSize(0, "Clear test 1 failed. Size didn't changed after clear");
-        assertArrayEquals(storage.getAll(), new Resume[0], "Clear test 2 failed. " +
-                "Storage contains non null elements");
+        assertIterableEquals(storage.getAllSorted(),
+                new ArrayList<Resume>(0), "Clear test 2 failed. " +
+                        "Storage contains non null elements");
     }
 
     @Test
     void update() {
-        Resume r = new Resume();
-        r.setUuid(UUID_1);
+        Resume r = new Resume(UUID_1, "Name1 LastName1");
         storage.update(r);
         assertNotSame(RESUME_1, storage.get(UUID_1), "Update test 1 failed. " +
                 "Resume reference stays the same after update");
@@ -113,12 +108,11 @@ abstract class AbstractStorageTest {
 
     @Test
     void getAll() {
-        Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-        Resume[] derived = storage.getAll();
-        Arrays.sort(derived);
-        assertEquals(3, derived.length, "GET ALL test 1 failed. " +
+        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        List<Resume> derived = storage.getAllSorted();
+        assertEquals(3, derived.size(), "GET ALL test 1 failed. " +
                 "Copied array length isn't the same as expected");
-        assertArrayEquals(expected, derived, "GET ALL test 2 failed. " +
+        assertIterableEquals(expected, derived, "GET ALL test 2 failed. " +
                 "Copied array isn't the same as expected");
     }
 

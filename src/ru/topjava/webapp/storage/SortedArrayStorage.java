@@ -3,6 +3,7 @@ package ru.topjava.webapp.storage;
 import ru.topjava.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Array based storage for Resumes
@@ -11,9 +12,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     final protected Integer getSearchKey(String uuid) {
-        Resume searchKey = new Resume();
-        searchKey.setUuid(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey);
+        Resume searchKey = new Resume(uuid, "NameNotRequiredHere");
+        return Arrays.binarySearch(storage, 0, size, searchKey,
+                Comparator.comparing(Resume::getUuid));
     }
 
     @Override

@@ -3,7 +3,9 @@ package ru.topjava.webapp.storage;
 import ru.topjava.webapp.exception.StorageException;
 import ru.topjava.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
@@ -22,10 +24,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    @Override
-    final public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
 
     @Override
     final public int size() {
@@ -62,6 +60,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     final protected boolean isExist(Object index) {
         return (int) index >= 0;
+    }
+
+    @Override
+    protected List<Resume> copyStorage() {
+        List<Resume> list = new ArrayList<>();
+        for (Resume r : storage) {
+            if (r == null) {
+                break;
+            }
+            list.add(r);
+        }
+        return list;
     }
 
     protected abstract void insertElement(Resume r, int index);

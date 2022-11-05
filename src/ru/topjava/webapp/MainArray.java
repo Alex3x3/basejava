@@ -1,33 +1,31 @@
 package ru.topjava.webapp;
 
+import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.model.Resume;
-import ru.topjava.webapp.storage.AbstractArrayStorage;
-import ru.topjava.webapp.storage.SortedArrayStorage;
+import ru.topjava.webapp.storage.AbstractStorage;
+import ru.topjava.webapp.storage.MapResumeStorage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * Interactive test for ru.topjava.webapp.storage.ArrayStorage implementation
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static AbstractArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
+    private final static AbstractStorage ARRAY_STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Resume r;
         while (true) {
-            System.out.print("Введите одну из команд - (list | size | save uuid | delete uuid | get uuid | clear | exit): ");
+            System.out.print("Введите одну из команд - (list | size | save fullName | delete uuid |" +
+                    " get uuid | update uuid fullName | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
-            if (params.length < 1 || params.length > 2) {
-                System.out.println("Неверная команда.");
+            if (params.length < 1 || params.length > 4) {
+                System.out.println("Неверная команда");
                 continue;
-            }
-            String uuid = null;
-            if (params.length == 2) {
-                uuid = params[1].intern();
             }
             switch (params[0]) {
                 case "list":
@@ -37,17 +35,36 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    r = new Resume();
-                    r.setUuid(uuid);
-                    ARRAY_STORAGE.save(r);
+                    if (params.length != 3) {
+                        System.out.println("Не верно указано имя. Сохранение не выполнено");
+                        continue;
+                    }
+                    ARRAY_STORAGE.save(new Resume(formatName(params[1]) + " " + formatName(params[2])));
                     printAll();
                     break;
                 case "delete":
-                    ARRAY_STORAGE.delete(uuid);
+                    try {
+                        ARRAY_STORAGE.delete(params[1]);
+                    } catch (NotExistStorageException e) {
+                        System.out.println("В хранилище отсутсвует запись с данным UUID. Удаление не выполнено");
+                    }
                     printAll();
                     break;
                 case "get":
-                    System.out.println(ARRAY_STORAGE.get(uuid));
+                    try {
+                        System.out.println(ARRAY_STORAGE.get(params[1]));
+                    } catch (NotExistStorageException e) {
+                        System.out.println("В хранилище отсутсвует запись с данным UUID");
+                    }
+                    break;
+                case "update":
+                    if (params.length != 4) {
+                        System.out.println("Не верно указано параметры. Обновление не выполнено");
+                        continue;
+                    }
+                    ARRAY_STORAGE.update(new Resume(params[1], formatName(params[2]) + " "
+                            + formatName(params[3])));
+                    printAll();
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();
@@ -63,15 +80,19 @@ public class MainArray {
     }
 
     static void printAll() {
-        Resume[] all = ARRAY_STORAGE.getAll();
+        List<Resume> list = ARRAY_STORAGE.getAllSorted();
         System.out.println("----------------------------");
-        if (all.length == 0) {
+        if (list.size() == 0) {
             System.out.println("Empty");
         } else {
-            for (Resume r : all) {
+            for (Resume r : list) {
                 System.out.println(r);
             }
         }
         System.out.println("----------------------------");
+    }
+
+    private static String formatName(String name) {
+        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }
 }

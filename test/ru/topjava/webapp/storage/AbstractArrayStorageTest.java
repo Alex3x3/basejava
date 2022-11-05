@@ -15,18 +15,14 @@ abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     @Test
     void saveOverflow() {
         fillStorage();
-        Resume r = new Resume();
-        r.setUuid("uuid10001");
-        assertThrows(StorageException.class, () -> storage.save(r),
+        assertThrows(StorageException.class, () -> storage.save(new Resume("noName")),
                 "Storage overflow test failed. Save method didn't throw exception");
     }
 
     private void fillStorage() {
         try {
             for (int i = storage.size(); i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                Resume r = new Resume();
-                r.setUuid("uuid" + (i + 1));
-                storage.save(r);
+                storage.save(new Resume("noName"));
             }
         } catch (StorageException e) {
             fail(e.getMessage());

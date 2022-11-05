@@ -3,21 +3,18 @@ package ru.topjava.webapp;
 import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.model.Resume;
 import ru.topjava.webapp.storage.AbstractStorage;
-import ru.topjava.webapp.storage.ListStorage;
+import ru.topjava.webapp.storage.SortedArrayStorage;
 
 /**
  * Test for your ru.topjava.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final AbstractStorage ARRAY_STORAGE = new ListStorage();
+    static final AbstractStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
-        Resume r1 = new Resume();
-        r1.setUuid("uuid1");
-        Resume r2 = new Resume();
-        r2.setUuid("uuid2");
-        Resume r3 = new Resume();
-        r3.setUuid("uuid3");
+        Resume r1 = new Resume("uuid1", "Name1");
+        Resume r2 = new Resume("uuid2", "Name2");
+        Resume r3 = new Resume("uuid3", "Name3");
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
@@ -34,8 +31,7 @@ public class MainTestArrayStorage {
 
         String uuid = r2.getUuid();
         System.out.println("\nUpdate " + uuid + " resume");
-        Resume r4 = new Resume();
-        r4.setUuid(uuid);
+        Resume r4 = new Resume("uuid2", "updatedName2");
         ARRAY_STORAGE.update(r4);
 
         printAll();
@@ -49,7 +45,7 @@ public class MainTestArrayStorage {
 
     static void printAll() {
         System.out.println("\nGet All");
-        for (Resume r : ARRAY_STORAGE.getAll()) {
+        for (Resume r : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(r);
         }
     }
