@@ -1,7 +1,9 @@
 package ru.topjava.webapp.storage;
 
 
-class MapResumeStorageTest extends AbstractStorageTest {
+import ru.topjava.webapp.model.Resume;
+
+class MapResumeStorageTest extends AbstractStorageTest<Resume> {
 
     MapResumeStorageTest() {
         super(new MapResumeStorage());

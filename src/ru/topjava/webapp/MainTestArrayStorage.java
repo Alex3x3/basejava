@@ -9,7 +9,7 @@ import ru.topjava.webapp.storage.SortedArrayStorage;
  * Test for your ru.topjava.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final AbstractStorage ARRAY_STORAGE = new SortedArrayStorage();
+    static final AbstractStorage<Integer> ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1", "Name1");

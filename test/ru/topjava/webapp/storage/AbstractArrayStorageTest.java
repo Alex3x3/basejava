@@ -7,8 +7,8 @@ import ru.topjava.webapp.model.Resume;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-abstract class AbstractArrayStorageTest extends AbstractStorageTest {
-    AbstractArrayStorageTest(AbstractStorage s) {
+abstract class AbstractArrayStorageTest extends AbstractStorageTest<Integer> {
+    AbstractArrayStorageTest(AbstractStorage<Integer> s) {
         super(s);
     }
 

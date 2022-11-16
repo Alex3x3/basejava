@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class AbstractStorageTest {
+abstract class AbstractStorageTest<SK> {
 
     protected static final String UUID_1 = "uuid1";
     protected static final String UUID_2 = "uuid2";
@@ -25,9 +25,9 @@ abstract class AbstractStorageTest {
     final static protected Resume RESUME_4 = new Resume(UUID_4, "Name4 LastName4");
 
 
-    final protected AbstractStorage storage;
+    final protected AbstractStorage<SK> storage;
 
-    AbstractStorageTest(AbstractStorage s) {
+    AbstractStorageTest(AbstractStorage<SK> s) {
         storage = s;
     }
 
