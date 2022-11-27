@@ -8,6 +8,10 @@ public class SingleLineSection extends Section {
         this.content = text;
     }
 
+    public String getContent() {
+        return content;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

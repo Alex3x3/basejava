@@ -1,5 +1,6 @@
 package ru.topjava.webapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -10,6 +11,10 @@ public class MultiLineSection extends Section {
 
     public MultiLineSection(List<String> content) {
         this.content = content;
+    }
+
+    public List<String> getContent() {
+        return new ArrayList<>(content);
     }
 
     @Override

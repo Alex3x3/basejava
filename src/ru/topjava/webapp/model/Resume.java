@@ -32,20 +32,20 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
-    public void fillContacts(ContactType contactType, String contact) {
-        contacts.put(contactType, contact);
-    }
-
-    public void fillSections(SectionType sectionType, Section content) {
-        sections.put(sectionType, content);
-    }
-
     public Map<ContactType, String> getContacts() {
         return Map.copyOf(contacts);
     }
 
     public Map<SectionType, Section> getSections() {
         return Map.copyOf(sections);
+    }
+
+    public void fillContacts(ContactType contactType, String contact) {
+        contacts.put(contactType, contact);
+    }
+
+    public void fillSections(SectionType sectionType, Section content) {
+        sections.put(sectionType, content);
     }
 
     @Override

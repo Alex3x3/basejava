@@ -1,5 +1,6 @@
 package ru.topjava.webapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -10,6 +11,10 @@ public class CompanySection extends Section {
 
     public CompanySection(List<Company> companies) {
         this.companies = companies;
+    }
+
+    public List<Company> getCompanies() {
+        return new ArrayList<>(companies);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.topjava.webapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -14,6 +15,18 @@ public class Company {
         this.name = name;
         this.website = website;
         this.periods = periods;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public List<Period> getPeriods() {
+        return new ArrayList<>(periods);
     }
 
     @Override

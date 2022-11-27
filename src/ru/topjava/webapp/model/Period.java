@@ -4,16 +4,32 @@ import java.util.Objects;
 
 public class Period {
 
-    String title;
-    String startDate;
-    String endDate;
-    String description;
+    private final String title;
+    private final String startDate;
+    private final String endDate;
+    private final String description;
 
     public Period(String title, String startDate, String endDate, String description) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override
