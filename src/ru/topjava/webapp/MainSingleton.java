@@ -2,20 +2,20 @@ package ru.topjava.webapp;
 
 import ru.topjava.webapp.model.SectionType;
 
-public class TestSingleton {
-    private static TestSingleton instance;
+public class MainSingleton {
+    private static MainSingleton instance;
 
     public static void getInstance() {
         if (instance == null) {
-            instance = new TestSingleton();
+            instance = new MainSingleton();
         }
     }
 
-    private TestSingleton() {
+    private MainSingleton() {
     }
 
     public static void main(String[] args) {
-        TestSingleton.getInstance();
+        MainSingleton.getInstance();
         Singleton instance = Singleton.valueOf("INSTANCE2");
         System.out.println(instance.ordinal());
 

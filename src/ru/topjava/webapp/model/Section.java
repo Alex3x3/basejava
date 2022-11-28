@@ -1,4 +1,4 @@
 package ru.topjava.webapp.model;
 
-public class Section {
+abstract public class Section {
 }

@@ -10,6 +10,7 @@ public class CompanySection extends Section {
     private final List<Company> companies;
 
     public CompanySection(List<Company> companies) {
+        Objects.requireNonNull(companies, "organizations must not be null");
         this.companies = companies;
     }
 
@@ -29,7 +30,7 @@ public class CompanySection extends Section {
 
     @Override
     public int hashCode() {
-        return companies != null ? companies.hashCode() : 0;
+        return companies.hashCode();
     }
 
     @Override

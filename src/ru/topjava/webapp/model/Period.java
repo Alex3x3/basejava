@@ -1,15 +1,21 @@
 package ru.topjava.webapp.model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Period {
 
     private final String title;
-    private final String startDate;
-    private final String endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
     private final String description;
 
-    public Period(String title, String startDate, String endDate, String description) {
+    public Period(String title, LocalDate startDate, LocalDate endDate, String description) {
+        Objects.requireNonNull(title, "title must not be null");
+        Objects.requireNonNull(startDate, "startDate must not be null");
+        Objects.requireNonNull(endDate, "endDate must not be null");
+
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -20,11 +26,11 @@ public class Period {
         return title;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
@@ -47,16 +53,17 @@ public class Period {
 
     @Override
     public int hashCode() {
-        int result = title != null ? title.hashCode() : 0;
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        int result = title.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return startDate + " - " + endDate + " " + title +
-                "\n" + description;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM.yy");
+        return startDate.format(dtf) + " - " + endDate.format(dtf) + " " + title +
+                (description != null ? ("\n" + description) : "");
     }
 }

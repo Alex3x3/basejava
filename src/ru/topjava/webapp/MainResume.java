@@ -1,11 +1,13 @@
 package ru.topjava.webapp;
 
 import ru.topjava.webapp.model.*;
+import ru.topjava.webapp.util.DateUtil;
 
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResumeTestData {
+public class MainResume {
     public static void main(String[] args) {
         Resume resume = new Resume("Иван Петров");
         fillContactSections(resume);
@@ -38,12 +40,16 @@ public class ResumeTestData {
         fillMultiLineSection(resume, SectionType.QUALIFICATIONS, multiLineContent);
 
         List<Period> periods = new ArrayList<>();
-        periods.add(new Period("Инженер по программному тестированию", "09/1997", "01/2000",
+        periods.add(new Period("Инженер по программному тестированию",
+                DateUtil.of(1997, Month.SEPTEMBER),
+                DateUtil.of(2000, Month.JANUARY),
                 """
                         Тестирование, отладка, внедрение ПО цифровой
                         телефонной станции Alcatel 1000 S12 (CHILL,
                         ASM)."""));
-        periods.add(new Period("Инженер по программному тестированию", "09/1997", "01/2000",
+        periods.add(new Period("Инженер по программному тестированию",
+                DateUtil.of(2000, Month.FEBRUARY),
+                DateUtil.of(2010, Month.FEBRUARY),
                 """
                         Тестирование, отладка, внедрение ПО цифровой
                         телефонной станции Alcatel 2000 S900 (WORM,
@@ -53,7 +59,9 @@ public class ResumeTestData {
         companies.add(new Company("Alcatel", "alcatel.com", periods));
 
         periods = new ArrayList<>();
-        periods.add(new Period("Java архитектор", "04/2012", "10/2014",
+        periods.add(new Period("Java архитектор",
+                DateUtil.of(2012, Month.APRIL),
+                DateUtil.of(2014, Month.OCTOBER),
                 """
                         Организация процесса разработки системы ERP для разных окружений: релизная
                         политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация
@@ -64,12 +72,16 @@ public class ResumeTestData {
 
         periods = new ArrayList<>();
         periods.add(new Period("Functional Programming Principles in Scala' by Martin Odersky",
-                "03/2011", "04/2011", ""));
+                DateUtil.of(2011, Month.MARCH),
+                DateUtil.of(2011, Month.APRIL),
+                null));
         periods.add(new Period(
                 """
                         Курс "Объектно-ориентированный анализ ИС. Концептуальное
                         моделирование на UML.\"""",
-                "03/2013", "04/2013", ""));
+                DateUtil.of(2013, Month.MARCH),
+                DateUtil.of(2013, Month.APRIL),
+                null));
 
         companies = new ArrayList<>();
         companies.add(new Company("Udemy", "udemy.com", periods));

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.topjava.webapp.exception.ExistStorageException;
 import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.model.Resume;
+import ru.topjava.webapp.model.ResumeTestData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,10 +20,10 @@ abstract class AbstractStorageTest<SK> {
     protected static final String UUID_3 = "uuid3";
     protected static final String UUID_4 = "uuid4";
 
-    final static protected Resume RESUME_1 = new Resume(UUID_1, "Name1 LastName1");
-    final static protected Resume RESUME_2 = new Resume(UUID_2, "Name2 LastName2");
-    final static protected Resume RESUME_3 = new Resume(UUID_3, "Name3 LastName3");
-    final static protected Resume RESUME_4 = new Resume(UUID_4, "Name4 LastName4");
+    final static protected Resume RESUME_1 = ResumeTestData.createResume(UUID_1, "Name1 LastName1");
+    final static protected Resume RESUME_2 = ResumeTestData.createResume(UUID_2, "Name2 LastName2");
+    final static protected Resume RESUME_3 = ResumeTestData.createResume(UUID_3, "Name3 LastName3");
+    final static protected Resume RESUME_4 = ResumeTestData.createResume(UUID_4, "Name4 LastName4");
 
 
     final protected AbstractStorage<SK> storage;

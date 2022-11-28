@@ -2,6 +2,7 @@ package ru.topjava.webapp.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -15,11 +16,14 @@ public class Resume implements Comparable<Resume> {
     private final Map<SectionType, Section> sections = new HashMap<>();
 
     public Resume(String fullName) {
+        Objects.requireNonNull(fullName, "fullName must not be null");
         uuid = UUID.randomUUID().toString();
         this.fullName = fullName;
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "uuid must not be null");
+        Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
     }

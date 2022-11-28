@@ -12,6 +12,9 @@ public class Company {
     private final List<Period> periods;
 
     public Company(String name, String website, List<Period> periods) {
+        Objects.requireNonNull(name, "name mustn't be null");
+        Objects.requireNonNull(website, "website must not be null");
+        Objects.requireNonNull(periods, "title must not be null");
         this.name = name;
         this.website = website;
         this.periods = periods;
@@ -43,9 +46,9 @@ public class Company {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (website != null ? website.hashCode() : 0);
-        result = 31 * result + (periods != null ? periods.hashCode() : 0);
+        int result = name.hashCode();
+        result = 31 * result + website.hashCode();
+        result = 31 * result + periods.hashCode();
         return result;
     }
 

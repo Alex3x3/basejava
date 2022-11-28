@@ -10,6 +10,7 @@ public class MultiLineSection extends Section {
     private final List<String> content;
 
     public MultiLineSection(List<String> content) {
+        Objects.requireNonNull(content, "items must not be null");
         this.content = content;
     }
 
@@ -29,7 +30,7 @@ public class MultiLineSection extends Section {
 
     @Override
     public int hashCode() {
-        return content != null ? content.hashCode() : 0;
+        return content.hashCode();
     }
 
     @Override

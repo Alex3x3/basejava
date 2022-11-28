@@ -1,11 +1,14 @@
 package ru.topjava.webapp.model;
 
+import java.util.Objects;
+
 public class SingleLineSection extends Section {
 
     private final String content;
 
-    public SingleLineSection(String text) {
-        this.content = text;
+    public SingleLineSection(String content) {
+        Objects.requireNonNull(content, "content must not be null");
+        this.content = content;
     }
 
     public String getContent() {
