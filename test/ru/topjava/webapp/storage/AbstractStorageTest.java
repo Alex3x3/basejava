@@ -7,6 +7,7 @@ import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.model.Resume;
 import ru.topjava.webapp.model.ResumeTestData;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,8 @@ abstract class AbstractStorageTest<SK> {
 
 
     final protected AbstractStorage<SK> storage;
+
+    protected static final File STORAGE_DIR = new File("C:\\projects\\storage");
 
     AbstractStorageTest(AbstractStorage<SK> s) {
         storage = s;

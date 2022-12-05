@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class MainFile {
+
+    private static int offset = 0;
+
     public static void main(String[] args) {
         String filePath = ".\\.gitignore";
 
@@ -33,17 +36,17 @@ public class MainFile {
         }
 
         System.out.println("\nBaseJava project list:");
-        listFilesForFolder(new File("."));
+        listFilesForFolder(new File("."), "");
     }
 
-    private static void listFilesForFolder(File folder) {
+    private static void listFilesForFolder(File folder, String offset) {
         try {
             for (File file : Objects.requireNonNull(folder.listFiles())) {
                 if (file.isDirectory()) {
-                    System.out.println("\nDir: " + file);
-                    listFilesForFolder(file);
+                    System.out.println(offset + "Dir: " + file);
+                    listFilesForFolder(file, offset + "  ");
                 } else {
-                    System.out.println("File: " + file.getName());
+                    System.out.println(offset + "File: " + file.getName());
                 }
             }
         } catch (NullPointerException ignored) {

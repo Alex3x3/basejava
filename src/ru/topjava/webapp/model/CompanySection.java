@@ -1,12 +1,16 @@
 package ru.topjava.webapp.model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class CompanySection extends Section {
+public class CompanySection extends Section implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final List<Company> companies;
 
     public CompanySection(List<Company> companies) {

@@ -1,9 +1,13 @@
 package ru.topjava.webapp.model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class SingleLineSection extends Section {
+public class SingleLineSection extends Section implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final String content;
 
     public SingleLineSection(String content) {
