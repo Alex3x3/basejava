@@ -40,10 +40,10 @@ public class FileStorage extends AbstractStorage<File> {
             if (!file.createNewFile()) {
                 throw new StorageException("File create error", r.getUuid());
             }
-            streamSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File write error", file.getName(), e);
         }
+        doUpdate(r, file);
     }
 
     @Override
@@ -74,10 +74,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     final public void clear() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException("Directory not exist or read error");
-        }
+        File[] files = getFiles();
         for (File file : files) {
             doDelete(file);
         }
@@ -85,24 +82,26 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     final public int size() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException("Directory not exist or read error");
-        }
+        File[] files = getFiles();
         return files.length;
     }
 
     @Override
     final protected List<Resume> copyStorage() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException("Directory not exist or read error");
-        }
+        File[] files = getFiles();
         List<Resume> list = new ArrayList<>();
         for (File file : files) {
             Resume r = doGet(file);
             list.add(r);
         }
         return list;
+    }
+
+    private File[] getFiles() {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Directory not exist or read error");
+        }
+        return files;
     }
 }
