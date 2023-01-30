@@ -8,7 +8,10 @@ public class SingleLineSection extends Section implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-    private final String content;
+    private String content;
+
+    public SingleLineSection() {
+    }
 
     public SingleLineSection(String content) {
         Objects.requireNonNull(content, "content must not be null");

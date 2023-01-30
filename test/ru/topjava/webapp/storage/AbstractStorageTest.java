@@ -54,7 +54,7 @@ abstract class AbstractStorageTest<SK> {
 
     @Test
     void update() {
-        Resume r = new Resume(UUID_1, "Name1 LastName1");
+        Resume r = ResumeTestData.createResume(UUID_1, "Name1 LastName1");
         storage.update(r);
         assertNotSame(RESUME_1, storage.get(UUID_1), "Update test 1 failed. " +
                 "Resume reference stays the same after update");

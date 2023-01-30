@@ -12,7 +12,10 @@ public class MultiLineSection extends Section implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final List<String> content;
+    private List<String> content;
+
+    public MultiLineSection() {
+    }
 
     public MultiLineSection(List<String> content) {
         Objects.requireNonNull(content, "items must not be null");
