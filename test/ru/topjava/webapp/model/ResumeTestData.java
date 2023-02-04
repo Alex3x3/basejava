@@ -53,13 +53,13 @@ public class ResumeTestData {
                                         List.of(new Period("University1 title1",
                                                 DateUtil.of(2000, Month.SEPTEMBER),
                                                 DateUtil.of(2005, Month.JULY),
-                                                null))),
+                                                "University1 period1 description"))),
 
                                 new Company("University2", "https://university2.ru",
                                         List.of(new Period("University2 title1",
                                                 DateUtil.of(2005, Month.SEPTEMBER),
                                                 DateUtil.of(2010, Month.JULY),
-                                                null))))));
+                                                "University2 period1 description"))))));
 
         return resume;
     }
