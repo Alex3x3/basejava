@@ -1,6 +1,8 @@
 package ru.topjava.webapp.model;
 
-import ru.topjava.webapp.util.LocalDateAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import ru.topjava.webapp.util.LocalDateJsonAdapter;
+import ru.topjava.webapp.util.LocalDateXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,10 +21,12 @@ public class Period implements Serializable {
 
     private String title;
 
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlJavaTypeAdapter(LocalDateXmlAdapter.class)
+    @JsonAdapter(LocalDateJsonAdapter.class)
     private LocalDate startDate;
 
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlJavaTypeAdapter(LocalDateXmlAdapter.class)
+    @JsonAdapter(LocalDateJsonAdapter.class)
     private LocalDate endDate;
     private String description;
 
