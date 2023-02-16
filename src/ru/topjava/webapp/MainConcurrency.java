@@ -8,7 +8,7 @@ public class MainConcurrency {
     private int counter;
     private static final Object LOCK = new Object();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         System.out.println(Thread.currentThread().getName());
 
         Thread thread0 = new Thread() {
@@ -58,7 +58,32 @@ public class MainConcurrency {
             }
         });
         System.out.println(mainConcurrency.counter);
+
+        String lock1 = "lock1";
+        String lock2 = "lock2";
+        doDeadLock(lock1, lock2, "DeadLockThread1");
+        doDeadLock(lock2, lock1, "DeadLockThread2");
     }
+
+    public static void doDeadLock(Object lock1, Object lock2, String threadName) {
+        new Thread(() ->
+        {
+            Thread.currentThread().setName(threadName);
+            synchronized (lock1) {
+                System.out.println(Thread.currentThread().getName() + " is holding " + lock1 + "...");
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName() + " is waiting " + lock2 + "...");
+                synchronized (lock2) {
+                    System.out.println(Thread.currentThread().getName() + " is holding " + lock2 + "...");
+                }
+            }
+        }).start();
+    }
+
 
     private synchronized void inc() {
 //        synchronized (this) {
