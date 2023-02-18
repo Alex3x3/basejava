@@ -55,11 +55,11 @@ public class ResumeTestData {
                                                 DateUtil.of(2005, Month.JULY),
                                                 "University1 period1 description"))),
 
-                                new Company("University2", "https://university2.ru",
+                                new Company("University2", null,
                                         List.of(new Period("University2 title1",
                                                 DateUtil.of(2005, Month.SEPTEMBER),
                                                 DateUtil.of(2010, Month.JULY),
-                                                "University2 period1 description"))))));
+                                                null))))));
 
         return resume;
     }

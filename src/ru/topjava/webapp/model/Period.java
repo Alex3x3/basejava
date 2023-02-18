@@ -41,7 +41,7 @@ public class Period implements Serializable {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.description = description;
+        this.description = description == null ? "" : description;
     }
 
     public String getTitle() {

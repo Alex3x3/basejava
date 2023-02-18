@@ -34,13 +34,13 @@ public class DataStreamSerializer implements StreamSerializer {
                             writeCollection(dos, ((CompanySection) section).getCompanies(), org -> {
                                 dos.writeUTF(org.getName());
                                 String website = org.getWebsite();
-                                dos.writeUTF(website == null ? "" : website);
+                                dos.writeUTF(website);
                                 writeCollection(dos, org.getPeriods(), period -> {
                                     dos.writeUTF(period.getTitle());
                                     writeLocalDate(dos, period.getStartDate());
                                     writeLocalDate(dos, period.getEndDate());
                                     String description = period.getDescription();
-                                    dos.writeUTF(description == null ? "" : description);
+                                    dos.writeUTF(description);
                                 });
                             });
                 }
