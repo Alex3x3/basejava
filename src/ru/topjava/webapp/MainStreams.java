@@ -13,10 +13,8 @@ public class MainStreams {
     }
 
     static int minValue(int[] values) {
-        Integer[] numbers = IntStream.of(values).boxed().toArray(Integer[]::new);
-        Set<Integer> allItems = new HashSet<>();
-        return Arrays.stream(numbers)
-                .filter(allItems::add)
+        return IntStream.of(values)
+                .distinct()
                 .sorted()
                 .reduce(0, (a, b) -> a * 10 + b);
     }
