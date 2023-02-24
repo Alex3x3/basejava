@@ -1,18 +1,12 @@
 package ru.topjava.webapp.model;
 
-import ru.topjava.webapp.util.DateUtil;
-
-import java.time.Month;
-import java.util.Arrays;
-import java.util.List;
-
 public class ResumeTestData {
 
     public static Resume createResume(String uuid, String fullName) {
 
         Resume resume = new Resume(uuid, fullName);
 
-        resume.fillContacts(ContactType.PHONE_NUMBER, "+7 (000) 111-22-33");
+      /*  resume.fillContacts(ContactType.PHONE_NUMBER, "+7 (000) 111-22-33");
         resume.fillContacts(ContactType.SKYPE, "skype:contact");
         resume.fillContacts(ContactType.EMAIL, "name@mail.ru");
         resume.fillContacts(ContactType.LINKEDIN, "linkedin:profile");
@@ -60,7 +54,7 @@ public class ResumeTestData {
                                                 DateUtil.of(2005, Month.SEPTEMBER),
                                                 DateUtil.of(2010, Month.JULY),
                                                 null))))));
-
+                                                */
         return resume;
     }
 }
