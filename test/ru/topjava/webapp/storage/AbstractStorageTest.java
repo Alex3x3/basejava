@@ -6,7 +6,7 @@ import ru.topjava.webapp.exception.ExistStorageException;
 import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.model.Resume;
 import ru.topjava.webapp.model.ResumeTestData;
-import ru.topjava.webapp.util.Config;
+import ru.topjava.webapp.Config;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,24 +15,29 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class AbstractStorageTest<SK> {
+abstract class AbstractStorageTest {
 
     protected static final String UUID_1 = "uuid1";
     protected static final String UUID_2 = "uuid2";
     protected static final String UUID_3 = "uuid3";
     protected static final String UUID_4 = "uuid4";
 
-    final static protected Resume RESUME_1 = ResumeTestData.createResume(UUID_1, "Name1 LastName1");
-    final static protected Resume RESUME_2 = ResumeTestData.createResume(UUID_2, "Name2 LastName2");
-    final static protected Resume RESUME_3 = ResumeTestData.createResume(UUID_3, "Name3 LastName3");
-    final static protected Resume RESUME_4 = ResumeTestData.createResume(UUID_4, "Name4 LastName4");
+//    final static protected Resume RESUME_1 = ResumeTestData.createResume(UUID_1, "Name1 LastName1");
+//    final static protected Resume RESUME_2 = ResumeTestData.createResume(UUID_2, "Name2 LastName2");
+//    final static protected Resume RESUME_3 = ResumeTestData.createResume(UUID_3, "Name3 LastName3");
+//    final static protected Resume RESUME_4 = ResumeTestData.createResume(UUID_4, "Name4 LastName4");
+
+    Resume RESUME_1 = new Resume(UUID_1, "Name1");
+    Resume RESUME_2 = new Resume(UUID_2, "Name2");
+    Resume RESUME_3 = new Resume(UUID_3, "Name3");
+    Resume RESUME_4 = new Resume(UUID_4, "Name4");
 
 
-    final protected AbstractStorage<SK> storage;
+    final protected Storage storage;
 
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
-    AbstractStorageTest(AbstractStorage<SK> s) {
+    AbstractStorageTest(Storage s) {
         storage = s;
     }
 
