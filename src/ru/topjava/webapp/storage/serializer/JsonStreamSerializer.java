@@ -1,7 +1,7 @@
 package ru.topjava.webapp.storage.serializer;
 
-import ru.topjava.webapp.model.Resume;
 import ru.topjava.webapp.util.JsonParser;
+import ru.topjava.webapp.model.Resume;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

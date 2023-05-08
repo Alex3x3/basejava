@@ -1,8 +1,8 @@
 package ru.topjava.webapp.storage;
 
 import ru.topjava.webapp.exception.StorageException;
-import ru.topjava.webapp.model.Resume;
 import ru.topjava.webapp.storage.serializer.StreamSerializer;
+import ru.topjava.webapp.model.Resume;
 
 import java.io.*;
 import java.util.ArrayList;

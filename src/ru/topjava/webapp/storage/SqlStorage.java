@@ -2,8 +2,8 @@ package ru.topjava.webapp.storage;
 
 import ru.topjava.webapp.exception.NotExistStorageException;
 import ru.topjava.webapp.exception.StorageException;
-import ru.topjava.webapp.model.Resume;
 import ru.topjava.webapp.sql.ConnectionFactory;
+import ru.topjava.webapp.model.Resume;
 
 import java.sql.*;
 import java.util.List;
